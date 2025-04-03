@@ -2,11 +2,11 @@
 
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
+import { Button } from "'components/ui/button'" 
+import { Card } from "'components/ui/card'" 
 import { ArrowLeft, Heart, Info } from "lucide-react"
 import Image from "next/image"
-import { Confetti } from "@/components/confetti"
+import { Confetti } from "'components/confetti'" 
 
 interface MemoryGameProps {
   onComplete: () => void
@@ -28,21 +28,19 @@ export default function MemoryGame({ onComplete }: MemoryGameProps) {
   const [showConfetti, setShowConfetti] = useState<boolean>(false)
   const [showInfo, setShowInfo] = useState<boolean>(true)
 
-  // Images for the memory game - in a real app, these would be your actual photos
-  // Você pode substituir estes placeholders por suas próprias imagens
+  // Updated image paths for the memory game
   const cardImages = [
-    "/1.jpeg?height=150&width=150",
-    "/2.jpeg?height=150&width=150",
-    "/3.jpeg?height=150&width=150",
-    "/4.jpeg?height=150&width=150",
-    "/5.jpeg?height=150&width=150",
-    "/6.jpeg?height=150&width=150",
+    "/placeholder-logo.png",
+    "/placeholder-logo.svg",
+    "/placeholder-user.jpg",
+    "/placeholder.jpg",
+    "/placeholder.svg",
+    "/placeholder-logo.png",
   ]
 
   useEffect(() => {
     initializeGame()
 
-    // Esconder a mensagem de informação após 5 segundos
     const timer = setTimeout(() => {
       setShowInfo(false)
     }, 5000)
@@ -56,14 +54,12 @@ export default function MemoryGame({ onComplete }: MemoryGameProps) {
       const secondCard = cards.find((card) => card.id === flippedCards[1])
 
       if (firstCard && secondCard && firstCard.imageUrl === secondCard.imageUrl) {
-        // Match found
         setCards((prevCards) =>
           prevCards.map((card) => (flippedCards.includes(card.id) ? { ...card, isMatched: true } : card)),
         )
         setMatchedPairs((prev) => prev + 1)
         setFlippedCards([])
       } else {
-        // No match, flip cards back after a delay
         setTimeout(() => {
           setCards((prevCards) =>
             prevCards.map((card) =>
@@ -86,7 +82,6 @@ export default function MemoryGame({ onComplete }: MemoryGameProps) {
   }, [matchedPairs, cardImages.length, cards.length])
 
   const initializeGame = () => {
-    // Create pairs of cards
     const cardPairs = [...cardImages, ...cardImages].map((imageUrl, index) => ({
       id: index,
       imageUrl,
@@ -94,7 +89,6 @@ export default function MemoryGame({ onComplete }: MemoryGameProps) {
       isMatched: false,
     }))
 
-    // Shuffle the cards
     const shuffledCards = shuffleArray(cardPairs)
     setCards(shuffledCards)
     setFlippedCards([])
@@ -113,16 +107,13 @@ export default function MemoryGame({ onComplete }: MemoryGameProps) {
   }
 
   const handleCardClick = (id: number) => {
-    // Ignore click if already two cards flipped or this card is already flipped/matched
     const clickedCard = cards.find((card) => card.id === id)
     if (flippedCards.length >= 2 || !clickedCard || clickedCard.isFlipped || clickedCard.isMatched) {
       return
     }
 
-    // Flip the card
     setCards((prevCards) => prevCards.map((card) => (card.id === id ? { ...card, isFlipped: true } : card)))
 
-    // Add to flipped cards
     setFlippedCards((prev) => [...prev, id])
   }
 
@@ -199,4 +190,3 @@ export default function MemoryGame({ onComplete }: MemoryGameProps) {
     </motion.div>
   )
 }
-
